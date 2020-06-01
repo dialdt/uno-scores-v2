@@ -47,12 +47,14 @@ class Database {
 
 }
 
+const decoder = new TextDecoder('utf-8');
+
 fetch('/.netlify/functions/auth').then(response => {
     response.body
       .getReader()
       .read()
       .then(({value, done}) => {
-        console.log(value)
+        console.log(decoder.decode(value))
       })
   });
 
