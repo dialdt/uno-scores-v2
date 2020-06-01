@@ -47,7 +47,7 @@ class Database {
 
 }
 
-fetch('../.netlify/functions/auth').then(function(data){
+fetch('/.netlify/functions/auth').then(function(data){
   console.log(data)
 });
 
