@@ -48,25 +48,26 @@ class Database {
 }
 
 const decoder = new TextDecoder('utf-8');
+var database;
 
 fetch('/.netlify/functions/auth').then(response => {
     response.body
       .getReader()
       .read()
       .then(({value, done}) => {
+        let val = decoder.decode(value).result;
+        database = new Database(
+          val.apiKey,
+          val.authDomain,
+          val.databaseURL,
+          val.projectId,
+          val.storageBucket,
+          val.messagingSenderId,
+          val.appId
+        )
         console.log(decoder.decode(value))
       })
   });
-
-var database = new Database(
-  config.apiKey,
-  config.authDomain,
-  config.databaseURL,
-  config.projectId,
-  config.storageBucket,
-  config.messagingSenderId,
-  config.appId
-);
 
 database.config();
 
