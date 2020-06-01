@@ -47,9 +47,14 @@ class Database {
 
 }
 
-fetch('/.netlify/functions/auth').then(function(data){
-  console.log(data.result)
-});
+fetch('/.netlify/functions/auth').then(response => {
+    response.body
+      .getReader()
+      .read()
+      .then(({value, done}) => {
+        console.log(value)
+      })
+  });
 
 var database = new Database(
   config.apiKey,
