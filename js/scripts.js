@@ -48,7 +48,7 @@ class Database {
 }
 
 fetch('/.netlify/functions/auth').then(function(data){
-  console.log(JSON.parst(data))
+  console.log(data)
 });
 
 var database = new Database(
