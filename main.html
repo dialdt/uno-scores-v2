@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://apis.google.com https://cdn.firebase.com https://www.gstatic.com; object-src 'self'">
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
   <script>
@@ -83,9 +83,9 @@
 <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
 
-<script src="{{ '/js/config.js' | url }}"></script>
-<script src="{{ '/js/scripts.js' | url }}"></script>
-<script src="{{ '/js/class.js' | url }}"></script>
+<script src='/js/config.js'></script>
+<script src='/js/scripts.js'></script>
+<script src='/js/class.js'></script>
 
 <footer>
   <small id="copyright">&copy; 2020 Isla Jassat</small>
