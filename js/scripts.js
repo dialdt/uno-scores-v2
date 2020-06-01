@@ -47,12 +47,9 @@ class Database {
 
 }
 
-let configs = async () => {
-  const result = await fetch('../functions/auth')
-  return result;
-}
-
-console.log(configs)
+fetch('../functions/auth/auth').then(function(data){
+  console.log(data)
+});
 
 var database = new Database(
   config.apiKey,
