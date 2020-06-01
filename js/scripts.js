@@ -47,7 +47,7 @@ class Database {
 
 }
 
-fetch('../functions/auth/auth').then(function(data){
+fetch('../functions/auth').then(function(data){
   console.log(data)
 });
 
