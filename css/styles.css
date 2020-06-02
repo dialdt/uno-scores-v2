@@ -1,0 +1,36 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Jost !important;
+  color: white !important;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  padding-left: 10px;
+  background-color: #e74c3c !important;
+}
+
+.center {
+  text-align: center;
+}
+
+.copyright {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+#hero-title {
+  font-size: 80px;
+  color: yellow;
+  font-family: 'Amatic SC';
+  margin-bottom: 5px;
+}

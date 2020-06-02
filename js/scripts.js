@@ -1,7 +1,9 @@
+if(window.location.href === 'main') {
 var modal = document.getElementsByClassName('modal');
 var addPlayer = document.getElementById('player');
 var addRule = document.getElementById('rule');
 var close = document.getElementsByClassName('close');
+
 
 addPlayer.onclick = function() {
   modal[0].style.display = 'block';
@@ -15,6 +17,7 @@ for(btn of close) {
   btn.onclick = function() {
     this.parentElement.parentElement.style.display = 'none';
   }
+}
 }
 
 
