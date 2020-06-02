@@ -184,14 +184,16 @@ function display(collection) {
   var updateScores = document.getElementById('updateScores');
   var addPlayerMsg = document.getElementById('addPlayersMsg');
   var display = document.getElementsByClassName(collection + '-display');
+  console.log('get-data')
   data.get().then(function(doc){
 
     for (var i = 0; i < display.length; i++) {
       display[i].innerHTML = '';
     }
-
+    console.log('does doc exist?')
     //1. check if document exists
     if(doc.exists) {
+      console.log(doc)
 
       //1a. if document exists, check if it contains any data.  If so, output data
       if(Object.keys(doc.data()).length > 0) {
