@@ -2,6 +2,7 @@
 <html>
 
 <head>
+  <script src='/js/config.js'></script>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://apis.google.com https://cdn.firebase.com https://www.gstatic.com; object-src 'self'">
   <meta content="width=device-width, initial-scale=1" name="viewport" />
@@ -29,7 +30,7 @@
         <h1 id="hero-title">Uno Score Tracker</h1>
         <p id="subtitle">Never be accused of cheating by your family again</p>
         <br/>
-        <img src="{{ '/assets/images/sing-in-btnx1.png' }}" onclick="login()" style="cursor: pointer; margin-top: 20px;" />
+        <img src='/assets/images/sing-in-btnx1.png' onclick="login()" style="cursor: pointer; margin-top: 20px;" />
       </div>
     </div>
   </div>
@@ -45,9 +46,8 @@
   <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
 
-  <script src='/js/config.js'></script>
+
   <script src='/js/scripts.js'></script>
-  <script src='/js/class.js'></script>
 
   <footer>
     <small id="copyright">&copy; 2020 Isla Jassat</small>

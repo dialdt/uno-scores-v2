@@ -29,6 +29,8 @@ class Database {
     this.appId = appId;
   }
 
+
+
   config() {
     firebase.initializeApp({
       apiKey: this.apiKey,
@@ -41,42 +43,53 @@ class Database {
     });
   }
 
-  init(collection) {
-    return firebase.firestore().collection(collection).doc(localStorage.getItem('user'));
-  }
+
 
 }
 
-const decoder = new TextDecoder('utf-8');
-var database;
+/*(async () => {
+  const resource = await fetch('/.netlify/functions/auth')
+  const reader = await resource.body.getReader()
 
-fetch('/.netlify/functions/auth').then(response => {
-    response.body
-      .getReader()
-      .read()
-      .then(({value, done}) => {
-        let val = decoder.decode(value).result;
-        database = new Database(
-          val.apiKey,
-          val.authDomain,
-          val.databaseURL,
-          val.projectId,
-          val.storageBucket,
-          val.messagingSenderId,
-          val.appId
-        )
-        console.log(decoder.decode(value))
-      })
-  });
+  let charsReceived = 0
+  let result = ''
 
-database.config();
+  reader.read().then(function processText({ done, value }) {
+    if (done) {
+      console.log('stream finished')
+      console.log(result)
+      return
+    }
+
+    console.log(`Received ${result.length} chars so far`)
+
+    result += value
+
+    return reader.read().then(processText)
+  })
+
+})()*/
+
+let firebaseConfig = {
+    apiKey:config.apiKey,
+    authDomain: config.authDomain,
+    databaseURL: config.databaseURL,
+    projectId: config.projectId,
+    storageBucket: config.storageBucket,
+    messagingSenderId: config.messagingSenderId,
+    appId: config.appId
+}
+firebase.initializeApp(firebaseConfig)
+
+function init(collection) {
+  return firebase.firestore().collection(collection).doc(localStorage.getItem('user'));
+}
 
 var greetings = ['Aloha', 'Yo', 'Hey', 'Hello', 'Welcome', 'Hi', 'Word up', 'What\'s up', '\'sup'],
     newScore,
     usr,
     name,
-
-provider = new firebase.auth.GoogleAuthProvider();
+    provider = new firebase.auth.GoogleAuthProvider();
 
 async function login() {
   await firebase.auth().signInWithPopup(provider).then(function(result){
@@ -89,8 +102,8 @@ async function login() {
     randomGreeting(result.user.displayName);
     window.location.href = '/main/';
   }).catch(function(error){
-    console.log(error);
-  });
+    console.log('error message' + error);
+  })
 
 }
 
@@ -98,7 +111,7 @@ function add(collection, item) {
 
       if(collection === 'teams') {
         var newPlayer = document.getElementById('updateScores');
-        var data = database.init(collection);
+        var data = init(collection);
         //some validation
         if(item != '') {
           data.update({
@@ -118,7 +131,7 @@ function add(collection, item) {
         //If adding a rule do something else
         var rulesDiv = document.getElementsByClassName('houseRules')[0];
         var ruleNum;
-        var data = database.init('rules');
+        var data = init('rules');
         data.get().then(function(doc){
           if(doc.exists) {
             //count fields
@@ -139,7 +152,7 @@ function add(collection, item) {
 }
 
 function remove(collection, item) {
-  var data = database.init(collection);
+  var data = init(collection);
   data.update({
     [`${item}`]: firebase.firestore.FieldValue.delete()
   }).then(function(){
@@ -152,7 +165,7 @@ function remove(collection, item) {
 }
 
 function update(collection, item, value) {
-  var data = database.init(collection);
+  var data = init(collection);
   var score = Number(value) //Prev: button.previousElementSibling.value;
 
   data.get().then(function(doc){
@@ -180,7 +193,7 @@ function display(collection) {
     display[i].innerHTML = '';
   }*/
 
-  var data = database.init(collection);
+  var data = init(collection);
   var scoresDiv = document.getElementById('scores');
   var updateScores = document.getElementById('updateScores');
   var addPlayerMsg = document.getElementById('addPlayersMsg');
@@ -263,7 +276,7 @@ function sortObj(obj) {
 }
 
 function reset(collection) {
-  var data = database.init(collection);
+  var data = init(collection);
   data.get().then(function(doc){
     if(doc.exists){
       var obj = doc.data();
