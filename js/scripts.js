@@ -1,25 +1,25 @@
 
 
-if(window.location.pathname === '/main/') {
-var modal = document.getElementsByClassName('modal');
-var addPlayer = document.getElementById('player');
-var addRule = document.getElementById('rule');
-var close = document.getElementsByClassName('close');
+if(window.location.pathname === '/main') {
+  var modal = document.getElementsByClassName('modal');
+  var addPlayer = document.getElementById('player');
+  var addRule = document.getElementById('rule');
+  var close = document.getElementsByClassName('close');
 
 
-addPlayer.onclick = function() {
-  modal[0].style.display = 'block';
-}
-
-addRule.onclick = function() {
-  modal[1].style.display = 'block';
-}
-
-for(btn of close) {
-  btn.onclick = function() {
-    this.parentElement.parentElement.style.display = 'none';
+  addPlayer.onclick = function() {
+    modal[0].style.display = 'block';
   }
-}
+
+  addRule.onclick = function() {
+    modal[1].style.display = 'block';
+  }
+
+  for(btn of close) {
+    btn.onclick = function() {
+      this.parentElement.parentElement.style.display = 'none';
+    }
+  }
 }
 
 /*(async () => {
@@ -58,8 +58,7 @@ axios.get('/.netlify/functions/auth').then(function(response) {
     messagingSenderId: val.messagingSenderId,
     appId: val.appId
   })
-  console.log(window.location.pathname)
-  if(window.location.pathname == '/main/') {
+  if(window.location.pathname == '/main') {
     console.log('main')
     display('teams');
     display('rules');
@@ -184,16 +183,16 @@ function display(collection) {
   var updateScores = document.getElementById('updateScores');
   var addPlayerMsg = document.getElementById('addPlayersMsg');
   var display = document.getElementsByClassName(collection + '-display');
-  console.log('get-data')
+
   data.get().then(function(doc){
 
     for (var i = 0; i < display.length; i++) {
       display[i].innerHTML = '';
     }
-    console.log('does doc exist?')
+
     //1. check if document exists
     if(doc.exists) {
-      console.log(doc)
+
 
       //1a. if document exists, check if it contains any data.  If so, output data
       if(Object.keys(doc.data()).length > 0) {
