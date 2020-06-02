@@ -58,7 +58,7 @@ axios.get('/.netlify/functions/auth').then(function(response) {
     messagingSenderId: val.messagingSenderId,
     appId: val.appId
   })
-
+  console.log(window.location.pathname)
   if(window.location.pathname == '/main/') {
     console.log('main')
     display('teams');
