@@ -1,4 +1,6 @@
-if(window.location.href === 'main') {
+
+
+if(window.location.pathname === '/main/') {
 var modal = document.getElementsByClassName('modal');
 var addPlayer = document.getElementById('player');
 var addRule = document.getElementById('rule');
@@ -18,36 +20,6 @@ for(btn of close) {
     this.parentElement.parentElement.style.display = 'none';
   }
 }
-}
-
-
-class Database {
-  constructor(apiKey, authDomain, databaseURL, projectId, storageBucket, messagingSenderId, appId) {
-    this.apiKey = apiKey;
-    this.authDomain = authDomain;
-    this.databaseURL = databaseURL;
-    this.projectId = projectId;
-    this.storageBucket = storageBucket;
-    this.messagingSenderId = messagingSenderId;
-    this.appId = appId;
-  }
-
-
-
-  config() {
-    firebase.initializeApp({
-      apiKey: this.apiKey,
-      authDomain: this.authDomain,
-      databaseURL: this.databaseURL,
-      projectId: this.projectId,
-      storageBucket: this.storageBucket,
-      messagingSenderId: this.messagingSenderId,
-      appId: this.appId
-    });
-  }
-
-
-
 }
 
 /*(async () => {
@@ -73,16 +45,27 @@ class Database {
 
 })()*/
 
-let firebaseConfig = {
-    apiKey:config.apiKey,
-    authDomain: config.authDomain,
-    databaseURL: config.databaseURL,
-    projectId: config.projectId,
-    storageBucket: config.storageBucket,
-    messagingSenderId: config.messagingSenderId,
-    appId: config.appId
-}
-firebase.initializeApp(firebaseConfig)
+let base;
+
+axios.get('/.netlify/functions/auth').then(function(response) {
+  let val = response.data.result
+  base = firebase.initializeApp({
+    apiKey: val.apiKey,
+    authDomain: val.authDomain,
+    databaseURL: val.databaseURL,
+    projectId: val.projectId,
+    storageBucket: val.storageBucket,
+    messagingSenderId: val.messagingSenderId,
+    appId: val.appId
+  })
+
+  if(window.location.pathname == '/main/') {
+    console.log('main')
+    display('teams');
+    display('rules');
+  }
+})
+
 
 function init(collection) {
   return firebase.firestore().collection(collection).doc(localStorage.getItem('user'));
