@@ -3,7 +3,6 @@ body {
   margin: 0;
   padding: 0;
   font-family: Jost !important;
-  color: white !important;
 }
 
 html {
@@ -13,19 +12,24 @@ html {
 body {
   min-height: 100%;
   padding-left: 10px;
-  background-color: #e74c3c !important;
 }
 
 .center {
   text-align: center;
 }
 
+#main-content {
+  padding-bottom: 30px;
+  min-height: 100%;
+}
+
 .copyright {
-  position: absolute;
+  position: relative;
   bottom: 10px;
   left: 0;
   right: 0;
   margin: auto;
+  margin-top: 30px;
 }
 
 #hero-title {
@@ -33,4 +37,99 @@ body {
   color: yellow;
   font-family: 'Amatic SC';
   margin-bottom: 5px;
+}
+
+.player {
+  list-style: none;
+  margin-bottom: 5px;
+}
+
+#updateScores {
+  padding: 0;
+}
+
+.welcome {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.nav {
+  margin-top: 10px;
+}
+
+.player-score:first-child {
+  background: #28a745;
+  color: #fff;
+}
+
+.player-score:first-child::before {
+  content: '🌟';
+}
+
+.player-score:last-child::before {
+  content: '💩';
+}
+
+.nav-item {
+  margin-right: 10px;
+}
+
+.remove {
+  position: relative;
+  float: right;
+  cursor: pointer;
+}
+
+.teams-display {
+  width: 100%;
+}
+
+.winner-btn {
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.main-section-header {
+  font-family: 'Amatic SC';
+  margin-bottom: 20px;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modalContent {
+  background-color: #3498db;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  width: 50%; /* Could be more or less, depending on screen size */
+  border-radius: 3px;
+  box-shadow: 3px 3px 30px #2c3e50;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }

@@ -6,11 +6,12 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://apis.google.com https://cdn.firebase.com https://www.gstatic.com https://code.jquery.com https://cdn.jsdelivr.net https://code.jquery.com https://stackpath.bootstrapcdn.com https://unpkg.com; object-src 'self'">
+  <meta http-equiv="Content-Security-Policy"
+    content="script-src 'self' 'unsafe-inline' https://apis.google.com https://cdn.firebase.com https://www.gstatic.com https://code.jquery.com https://cdn.jsdelivr.net https://code.jquery.com https://stackpath.bootstrapcdn.com https://unpkg.com; object-src 'self'">
   <meta content="width=device-width, initial-scale=1" name="viewport" />
   <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
   <script>
-    if(sessionStorage.getItem('authState') === null ) {
+    if (sessionStorage.getItem('authState') === null) {
       window.location.href = '/denied/';
     }
   </script>
@@ -23,77 +24,103 @@
 
 <body>
   <header>
-    <h1 class="nav-title" id="title" onclick="">Uno Score Tracker</h1>
     <ul class="nav">
-      <li class="nav-item" id="player" onclick="">+ Player</li>
-      <li class="nav-item" id="rule" onclick="">+ Rule</li>
-      <li class="nav-item" id="reset" onclick="reset('teams')">Reset</li>
+      <li class="nav-item btn btn-primary" id="player" onclick="">+ Player</li>
+      <li class="nav-item btn btn-primary" id="rule" onclick="">+ Rule</li>
+      <li class="nav-item btn btn-danger" id="reset" onclick="reset('teams')">Reset</li>
     </ul>
     <p class="welcome" id="welcome"></p>
   </header>
-  <div class="container">
-    <div class="grid">
-      <div class="modal">
-        <div class="modalContent">
-          <span class="close">&times;</span>
-          <div class="inputGroup">
-            <input type="text" id="newPlayer" placeholder="New player name"><button onclick="add('teams', this.previousElementSibling.value); this.parentElement.parentElement.parentElement.style.display='none'">+</button>
+  <div class="container main">
+    <div id="main-content">
+      <div class="grid">
+        <div class="modal" id="modal-player" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Add new player</h5>
+                <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body from-inline form-group mb-2">
+                <input type="text" id="newPlayer" class="form-control" placeholder="New player name">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="add('teams', document.getElementById('newPlayer').value)">Save changes</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="modal">
-        <div class="modalContent">
-          <span class="close">&times;</span>
-          <div class="inputGroup">
-            <input type="text" id="newRule" placeholder="New rule"><button onclick="add('rules', this.previousElementSibling.value); this.parentElement.parentElement.parentElement.style.display='none'">+</button>
+        <div class="modal" id="modal-rules" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Add new rule</h5>
+                <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body from-inline form-group mb-2">
+                <input type="text" id="newRule" class="form-control" placeholder="New rule">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="add('rules', document.getElementById('newRule').value)">Save changes</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="grid__col grid__col--3-of-5">
-        <h2>Score</h2>
-        <ul id="updateScores" class="teams-display">
-        </ul>
-        <div id="addPlayersMsg" class="display"></div>
-        <ul>
-        </ul>
-      </div>
-      <div class="grid__col grid__col--2-of-5">
-        <h2>Leaderboard</h2>
-        <div id="scoreContainer">
-          <ul id="scores" class="teams-display">
+        <div class="row">
+          <div class="col-md-6 offset-md-3">
+            <h2 class="main-section-header">Score</h2>
+            <div class="form-inline form-group mb-2">
+              <ul id="updateScores" class="teams-display list-group">
+              </ul>
+              <div id="addPlayersMsg" class="display"></div>
+              <ul>
+              </ul>
+            </div>
+            <h2 class="main-section-header">Leaderboard</h2>
+            <div id="scoreContainer">
+              <ul id="scores" class="teams-display list-group">
+              </ul>
+            </div>
+            <h2 class="main-section-header">House Rules</h2>
+            <div id="rulesContainer">
+              <ol class="houseRules rules-display list-group">
+              </ol>
+            </div>
+          </div>
+
+          <ul class="navigation">
           </ul>
         </div>
-        <h2>House Rules</h2>
-        <div id="rulesContainer">
-          <ol class="houseRules rules-display">
-          </ol>
-        </div>
       </div>
+      <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
 
-      <ul class="navigation">
-      </ul>
+      <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+      <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+      <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+
+      <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+      <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
+
+      <!-- Add Firebase products that you want to use -->
+      <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
+
+      <script src='/js/scripts.js'></script>
     </div>
-</div>
-<!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
-
-<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
-
-<!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
-<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-analytics.js"></script>
-
-<!-- Add Firebase products that you want to use -->
-<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-firestore.js"></script>
-
-<script src='/js/scripts.js'></script>
-
-<footer>
-  <small id="copyright">&copy; 2020 Isla Jassat</small>
-</footer>
+    <footer>
+      <div class="center copy-container">
+        <small class="copyright">&copy; 2020 Isla Jassat</small>
+      </div>
+    </footer>
+  </div>
 </body>
 
 </html>

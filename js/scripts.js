@@ -1,23 +1,26 @@
 
 
-if(window.location.pathname === '/main') {
-  var modal = document.getElementsByClassName('modal');
+if(window.location.pathname === '/main/') {
+  var modalPlayer = document.getElementById('modal-player');
+  var modalRules = document.getElementById('modal-rules');
   var addPlayer = document.getElementById('player');
   var addRule = document.getElementById('rule');
-  var close = document.getElementsByClassName('close');
+  var close = document.getElementsByClassName('close-btn');
+  var playerLine = `<li class="player"><label for=${name}" class="sr-only">${name}</label><input class="input form-control" type="number" id="${name}" placeholder="${name}"><button class="button-primary btn btn-primary" onclick="update(\'teams\', this.previousElementSibling.getAttribute(\'Id\'), this.previousElementSibling.value)">Winner!</button><button class="smallBtn btn btn-danger" onclick="remove(\'teams\',this.previousElementSibling.previousElementSibling.getAttribute(\'id\'))">x</button></li>`;
 
 
   addPlayer.onclick = function() {
-    modal[0].style.display = 'block';
+    modalPlayer.style.display = 'block';
   }
 
   addRule.onclick = function() {
-    modal[1].style.display = 'block';
+    modalRules.style.display = 'block';
   }
 
   for(btn of close) {
     btn.onclick = function() {
-      this.parentElement.parentElement.style.display = 'none';
+      modalPlayer.style.display = 'none';
+      modalRules.style.display = 'none';
     }
   }
 }
@@ -45,6 +48,19 @@ if(window.location.pathname === '/main') {
 
 })()*/
 
+function populate(text, score, context) {
+  if(context === 'player') {
+    return `<li class="player list-group-item"><label for=${text}" class="sr-only">${text}</label><input class="input form-control" type="number" id="${text}" placeholder="${text}"><button class="winner-btn btn btn-primary" onclick="update(\'teams\', this.previousElementSibling.getAttribute(\'Id\'), this.previousElementSibling.value)">
+🎉 Winner!</button><span class="remove" onclick="remove(\'teams\',this.previousElementSibling.previousElementSibling.getAttribute(\'id\'))">🗑️</span></li>`;
+  } else if (context === 'leaderboard') {
+    return `<li class="player-score list-group-item">${text}: ${score}</li>`;
+  } else if (context === 'rules') {
+    return `<li id="${text[0]}" class="list-group-item">${text[1]}<span onclick="remove(\'rules\',this.parentElement.getAttribute(\'id\'))" class="remove">🗑️</span></li>`;
+  } else if (context === 'addRule') {
+    `<li id="${score}" class="list-group-item">${text}<span onclick="remove(\'rules\',this.parentElement.getAttribute(\'id\'))" class="remove">🗑️</span></li>`;
+  }
+}
+
 let base;
 
 axios.get('/.netlify/functions/auth').then(function(response) {
@@ -58,7 +74,7 @@ axios.get('/.netlify/functions/auth').then(function(response) {
     messagingSenderId: val.messagingSenderId,
     appId: val.appId
   })
-  if(window.location.pathname == '/main') {
+  if(window.location.pathname == '/main/') {
     console.log('main')
     display('teams');
     display('rules');
@@ -103,8 +119,12 @@ function add(collection, item) {
                 [`${item}`]: 0
           }).then(function(){
             console.log('data added successfully!');
-            updateScores.innerHTML += '<li class="player"><label for=' + `${item}` + '">'+ `${item}` + '</label><input class="input" type="number" id="' + `${item}` + '"><button class="button-primary" onclick="update(\'teams\', this.previousElementSibling.getAttribute(\'Id\'), this.previousElementSibling.value)">Winner!</button><button class="smallBtn" onclick="remove(\'teams\',this.previousElementSibling.previousElementSibling.getAttribute(\'id\'))">x</button></li>';
-            document.getElementById('scores').innerHTML += '<li>' + `${item}` + ': 0</li>';
+            updateScores.innerHTML += populate(`${item}`, 0, 'player')
+            document.getElementById('scores').innerHTML += populate(`${item}`, 0, 'leaderboard');
+            document.getElementsByClassName('modal-body')[0].innerHTML = '✅ Player added!';
+            setTimeout(() => {
+              document.getElementsByClassName('modal-body')[0].innerHTML = '<input type="text" id="newPlayer" class="form-control" placeholder="New player name">';
+            }, 3000)
           }).catch(function(error){
             console.log('error writing data');
           })
@@ -130,7 +150,8 @@ function add(collection, item) {
             });
 
           }
-          rulesDiv.innerHTML += '<li id="' + ruleNum + '">' + item + '<button onclick="remove(\'rules\',this.parentElement.getAttribute(\'id\'))">x</button></li>';
+          rulesDiv.innerHTML += populate(item, ruleNum, 'addRule');
+          display('rules');
 
         })
       }
@@ -207,13 +228,14 @@ function display(collection) {
 
           //update page elements with db data
           if(collection === 'teams') {
-            document.getElementById('updateScores').innerHTML += '<li class="player"><label for=' + name + '">'+ name + '</label><input class="input" type="number" id="' + name + '"><button class="button-primary" onclick="update(\'teams\', this.previousElementSibling.getAttribute(\'Id\'), this.previousElementSibling.value)">Winner!</button><button class="smallBtn" onclick="remove(\'teams\',this.previousElementSibling.previousElementSibling.getAttribute(\'id\'))">x</button></li>';
-            document.getElementById('scores').innerHTML += '<li class="player">' + name + ': ' + score + '</li>';
+            document.getElementById('updateScores').innerHTML += populate(name, 0, 'player');
+            //'<li class="player"><label for=' + name + '" class="sr-only">'+ name + '</label><input class="input form-control" type="number" id="' + name + '" placeholder="' + name + '"><button class="button-primary btn btn-primary" onclick="update(\'teams\', this.previousElementSibling.getAttribute(\'Id\'), this.previousElementSibling.value)">Winner!</button><button class="smallBtn btn btn-danger" onclick="remove(\'teams\',this.previousElementSibling.previousElementSibling.getAttribute(\'id\'))">x</button></li>';
+            document.getElementById('scores').innerHTML += populate(name, score, 'leaderboard');
           } else if (collection === 'rules') {
               for(var i = 0; i < display.length; i++) {
                 display[i].innerHTML = ''
               }
-              document.getElementsByClassName('houseRules')[0].innerHTML += '<li id="' + sortedObj[key][0] + '">' + sortedObj[key][1] + '<button onclick="remove(\'rules\',this.parentElement.getAttribute(\'id\'))">x</button></li>';
+              document.getElementsByClassName('houseRules')[0].innerHTML += populate(sortedObj[key], 0, 'rules');
           }
         };
       } else {
