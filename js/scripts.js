@@ -1,63 +1,34 @@
 
 
-if(window.location.pathname === '/main/') {
+if(window.location.pathname === '/main') {
   var modalPlayer = document.getElementById('modal-player');
-  var modalRules = document.getElementById('modal-rules');
   var addPlayer = document.getElementById('player');
-  var addRule = document.getElementById('rule');
+  var modalReset = document.getElementById('modal-reset');
   var close = document.getElementsByClassName('close-btn');
-  var playerLine = `<li class="player"><label for=${name}" class="sr-only">${name}</label><input class="input form-control" type="number" id="${name}" placeholder="${name}"><button class="button-primary btn btn-primary" onclick="update(\'teams\', this.previousElementSibling.getAttribute(\'Id\'), this.previousElementSibling.value)">Winner!</button><button class="smallBtn btn btn-danger" onclick="remove(\'teams\',this.previousElementSibling.previousElementSibling.getAttribute(\'id\'))">x</button></li>`;
+  var resetBtn = document.getElementById('reset');
 
+  resetBtn.onclick = function() {
+    modalReset.style.display = 'block';
+  }
 
   addPlayer.onclick = function() {
     modalPlayer.style.display = 'block';
   }
 
-  addRule.onclick = function() {
-    modalRules.style.display = 'block';
-  }
-
   for(btn of close) {
     btn.onclick = function() {
       modalPlayer.style.display = 'none';
-      modalRules.style.display = 'none';
+      modalReset.style.display = 'none';
     }
   }
 }
-
-/*(async () => {
-  const resource = await fetch('/.netlify/functions/auth')
-  const reader = await resource.body.getReader()
-
-  let charsReceived = 0
-  let result = ''
-
-  reader.read().then(function processText({ done, value }) {
-    if (done) {
-      console.log('stream finished')
-      console.log(result)
-      return
-    }
-
-    console.log(`Received ${result.length} chars so far`)
-
-    result += value
-
-    return reader.read().then(processText)
-  })
-
-})()*/
 
 function populate(text, score, context) {
   if(context === 'player') {
     return `<li class="player list-group-item"><label for=${text}" class="sr-only">${text}</label><input class="input form-control" type="number" id="${text}" placeholder="${text}"><button class="winner-btn btn btn-primary" onclick="update(\'teams\', this.previousElementSibling.getAttribute(\'Id\'), this.previousElementSibling.value)">
 🎉 Winner!</button><span class="remove" onclick="remove(\'teams\',this.previousElementSibling.previousElementSibling.getAttribute(\'id\'))">🗑️</span></li>`;
   } else if (context === 'leaderboard') {
-    return `<li class="player-score list-group-item">${text}: ${score}</li>`;
-  } else if (context === 'rules') {
-    return `<li id="${text[0]}" class="list-group-item">${text[1]}<span onclick="remove(\'rules\',this.parentElement.getAttribute(\'id\'))" class="remove">🗑️</span></li>`;
-  } else if (context === 'addRule') {
-    `<li id="${score}" class="list-group-item">${text}<span onclick="remove(\'rules\',this.parentElement.getAttribute(\'id\'))" class="remove">🗑️</span></li>`;
+    return `<li class="player-score list-group-item">${text} <span class="score">${score}</span></li>`;
   }
 }
 
@@ -74,10 +45,8 @@ axios.get('/.netlify/functions/auth').then(function(response) {
     messagingSenderId: val.messagingSenderId,
     appId: val.appId
   })
-  if(window.location.pathname == '/main/') {
-    console.log('main')
+  if(window.location.pathname == '/main') {
     display('teams');
-    display('rules');
   }
 })
 
@@ -132,28 +101,6 @@ function add(collection, item) {
           console.log('Please enter a value');
         }
 
-      } else if (collection === 'rules') {
-        //If adding a rule do something else
-        var rulesDiv = document.getElementsByClassName('houseRules')[0];
-        var ruleNum;
-        var data = init('rules');
-        data.get().then(function(doc){
-          if(doc.exists) {
-            //count fields
-            ruleNum = 'rule' + (Object.keys(doc.data()).length === 0 ? 1 : Object.keys(doc.data()).length + 1);
-            data.update({
-              [`${ruleNum}`] : item
-            });
-          } else {
-            data.set({
-              [`${ruleNum}`] : item
-            });
-
-          }
-          rulesDiv.innerHTML += populate(item, ruleNum, 'addRule');
-          display('rules');
-
-        })
       }
 }
 
@@ -231,11 +178,6 @@ function display(collection) {
             document.getElementById('updateScores').innerHTML += populate(name, 0, 'player');
             //'<li class="player"><label for=' + name + '" class="sr-only">'+ name + '</label><input class="input form-control" type="number" id="' + name + '" placeholder="' + name + '"><button class="button-primary btn btn-primary" onclick="update(\'teams\', this.previousElementSibling.getAttribute(\'Id\'), this.previousElementSibling.value)">Winner!</button><button class="smallBtn btn btn-danger" onclick="remove(\'teams\',this.previousElementSibling.previousElementSibling.getAttribute(\'id\'))">x</button></li>';
             document.getElementById('scores').innerHTML += populate(name, score, 'leaderboard');
-          } else if (collection === 'rules') {
-              for(var i = 0; i < display.length; i++) {
-                display[i].innerHTML = ''
-              }
-              document.getElementsByClassName('houseRules')[0].innerHTML += populate(sortedObj[key], 0, 'rules');
           }
         };
       } else {

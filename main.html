@@ -25,9 +25,8 @@
 <body>
   <header>
     <ul class="nav">
-      <li class="nav-item btn btn-primary" id="player" onclick="">+ Player</li>
-      <li class="nav-item btn btn-primary" id="rule" onclick="">+ Rule</li>
-      <li class="nav-item btn btn-danger" id="reset" onclick="reset('teams')">Reset</li>
+      <li class="nav-item btn btn-primary" id="player">New Player</li>
+      <li class="nav-item btn btn-danger" id="reset">Reset Scores</li>
     </ul>
     <p class="welcome" id="welcome"></p>
   </header>
@@ -53,27 +52,27 @@
             </div>
           </div>
         </div>
-        <div class="modal" id="modal-rules" tabindex="-1" role="dialog">
+        <div class="modal" id="modal-reset" tabindex="-1" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Add new rule</h5>
+                <h5 class="modal-title">Reset scores</h5>
                 <button type="button" class="close close-btn" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body from-inline form-group mb-2">
-                <input type="text" id="newRule" class="form-control" placeholder="New rule">
+                Are you sure you want to reset all scores to zero?
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="add('rules', document.getElementById('newRule').value)">Save changes</button>
+                <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="btn-reset-yes" onclick="reset('teams'); modalReset.style.display = 'none'">Yes</button>
               </div>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6 offset-md-3">
+          <div class="col-lg-6">
             <h2 class="main-section-header">Score</h2>
             <div class="form-inline form-group mb-2">
               <ul id="updateScores" class="teams-display list-group">
@@ -82,20 +81,14 @@
               <ul>
               </ul>
             </div>
+          </div>
+          <div class="col-lg-6">
             <h2 class="main-section-header">Leaderboard</h2>
             <div id="scoreContainer">
               <ul id="scores" class="teams-display list-group">
               </ul>
             </div>
-            <h2 class="main-section-header">House Rules</h2>
-            <div id="rulesContainer">
-              <ol class="houseRules rules-display list-group">
-              </ol>
-            </div>
           </div>
-
-          <ul class="navigation">
-          </ul>
         </div>
       </div>
       <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
