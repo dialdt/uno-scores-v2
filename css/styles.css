@@ -1,7 +1,7 @@
 html,
 body {
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
   font-family: Jost !important;
 }
 
@@ -11,7 +11,6 @@ html {
 
 body {
   min-height: 100%;
-  padding-left: 10px;
 }
 
 .center {
@@ -57,10 +56,11 @@ body {
 
 .nav {
   margin-top: 10px;
+  margin-left: 10px;
 }
 
 .player-score:first-child {
-  background: #28a745;
+  background: #00b894;
   color: #fff;
 }
 
@@ -87,8 +87,6 @@ body {
 }
 
 .winner-btn {
-  margin-left: 10px;
-  margin-right: 10px;
   cursor: pointer;
 }
 
@@ -138,4 +136,52 @@ body {
 .score {
   position: relative;
   float: right;
+}
+
+@media screen
+  and (max-device-width: 576px){
+
+}
+
+.notify {
+  padding-top: 7px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  text-align: center;
+  background-color: #55efc4;
+  z-index: 9999;
+  color: #fff;
+  display: none;
+  font-size: 4rem;
+  padding-top: 150px;
+  text-shadow: 1px 1px 0px green, 2px 2px 0px black;
+}
+
+.notify-failure {
+  position: fixed;
+  padding-top:7px;
+  height: 70px;
+  width: 100%;
+  top: 0px;
+  z-index: 9999;
+  background-color: #d63031;
+  color: #fff;
+  text-align: center;
+  display: none;
+}
+
+
+@keyframes success {
+  0%    {transform: scale(0); }
+  25%   {transform: scale(1); }
+  50%   {transform: scale(1); }
+  70%   {opacity: 1;}
+  100%  {opacity: 0;}
+}
+
+.notify {
+  animation-name: success;
+  animation-duration: 1s;
 }

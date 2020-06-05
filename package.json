@@ -1,6 +1,6 @@
 {
   "name": "unov2",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "",
   "main": "index.html",
   "scripts": {
@@ -19,6 +19,6 @@
   "homepage": "https://github.com/dialdt/uno-scores-v2#readme",
   "dependencies": {
     "axios": "^0.19.2",
-    "netlify-cli": "^2.52.0"
+    "netlify-cli": "^2.53.0"
   }
 }
