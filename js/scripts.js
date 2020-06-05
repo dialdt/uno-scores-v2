@@ -4,7 +4,7 @@ let config = {
   }
 }
 
-if(window.location.pathname === '/main/') {
+if(window.location.pathname === '/main') {
   var modalPlayer = document.getElementById('modal-player');
   var addPlayer = document.getElementById('player');
   var modalReset = document.getElementById('modal-reset');
@@ -81,7 +81,7 @@ axios.get('/.netlify/functions/auth', config).then(function(response) {
     messagingSenderId: val.messagingSenderId,
     appId: val.appId
   })
-  if(window.location.pathname == '/main/') {
+  if(window.location.pathname == '/main') {
     display('teams');
   }
 })
