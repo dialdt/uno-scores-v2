@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/dialdt/uno-scores-v2#readme",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "netlify-cli": "^2.53.0"
   }
 }
